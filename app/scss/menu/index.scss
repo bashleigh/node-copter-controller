@@ -1,0 +1,26 @@
+.menu {
+  position: fixed;
+  top: 52px;
+  left: -300px;
+  width: 300px;
+  bottom: 0;
+
+  background: $primary;
+
+  transition: all .1s ease;
+
+  &.is-active {
+    left: 0;
+  }
+
+  .navbar-item {
+    color: $white;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: lighten($primary, 10%);
+    }
+  }
+
+}

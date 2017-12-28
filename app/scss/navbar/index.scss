@@ -1,0 +1,32 @@
+.navbar-burger,
+.navbar-menu {
+    display: block;
+}
+
+.navbar.level {
+    display: flex;
+    background-color: $primary;
+    color: $white;
+
+    .navbar-item {
+        color: $white;
+
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: lighten($primary, 10%);
+        }
+    }
+
+    .navbar-burger {
+        span {
+            background-color: $white;
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: lighten($primary, 10%);
+        }
+    }
+}

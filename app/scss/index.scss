@@ -1,0 +1,16 @@
+@import "~bulma/sass/utilities/initial-variables";
+@import './_variables';
+@import '~bulma';
+
+@import url('~font-awesome/css/font-awesome.min.css');
+
+@import './navbar/index';
+@import './menu/index';
+
+html, body {
+  height:100%;
+  margin: 0;
+  width:100%;
+  background: $black;
+  color: $primary;
+}
