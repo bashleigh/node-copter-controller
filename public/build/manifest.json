@@ -4,8 +4,8 @@
   "fontawesome-webfont.ttf?v=4.7.0": "b06871f281fee6b241d60582ae9369b9.ttf",
   "fontawesome-webfont.woff2?v=4.7.0": "af7ae505a9eed503f8b8e6982036873e.woff2",
   "fontawesome-webfont.woff?v=4.7.0": "fee66e712a8a08eef5805a46892932ad.woff",
-  "index.css": "e3e61bc6e5bc6a238b05233a034d3ccf.index.css",
-  "index.css.map": "b2328beb0372c051d06d.index.css.map",
-  "index.js": "9b573a8b6087fd7de2b2.index.js",
-  "index.js.map": "9b573a8b6087fd7de2b2.index.js.map"
+  "index.css": "index.css",
+  "index.css.map": "index.css.map",
+  "index.js": "index.js",
+  "index.js.map": "index.js.map"
 }

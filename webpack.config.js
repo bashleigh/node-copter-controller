@@ -3,7 +3,6 @@ const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const WebpackMd5Hash = require('webpack-md5-hash');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
 const BUILD_DIRECTORY = path.resolve(__dirname, 'public', 'build');
@@ -22,8 +21,8 @@ module.exports = function (env) {
         entry: ENTRY_POINTS,
         output: {
             path: BUILD_DIRECTORY,
-            filename: env === 'production' ? '[chunkhash].[name]' : '[name]',
-            chunkFilename: env === 'production' ? '[chunkhash].[name]' : '[name]',
+            filename: env === 'production' ? '[name]' : '[name]',
+            chunkFilename: env === 'production' ? '[name]' : '[name]',
             library: LIBRARY_NAME,
             libraryTarget: 'umd',
             umdNamedDefine: true
@@ -87,8 +86,7 @@ module.exports = function (env) {
         },
         plugins: [
             new CopyWebpackPlugin(),
-            new ExtractTextPlugin({filename: env === 'production' ? '[contenthash].[name]' : '[name]', allChunks: true}),
-            new WebpackMd5Hash(),
+            new ExtractTextPlugin({filename: env === 'production' ? '[name]' : '[name]', allChunks: true}),
             new ManifestPlugin({
                 stripSrc: new RegExp('(.css|.js)'),
             }),
