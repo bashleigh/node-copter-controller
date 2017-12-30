@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 const speed = 2;
+const loopInterval = 100;
 
 export default class Controller extends Component
 {
@@ -10,6 +11,7 @@ export default class Controller extends Component
         throttle: 0,
         rotateZ: 0,
         yawY: 0,
+        nudgeThrottle: 0,
         keyMap: {
             w: {
                 pitch: [1],
@@ -22,6 +24,12 @@ export default class Controller extends Component
             },
             d: {
                 yawY: [-1],
+            },
+            e: {
+                nudgeThrottle: [1],
+            },
+            f: {
+                nudgeThrottle: [-1],
             },
             ArrowUp: {
                 throttle: [true],
@@ -36,13 +44,36 @@ export default class Controller extends Component
                 rotateZ: [1],
             },
         },
+        activeKeys: [],
+        deactivatingKeys: [],
     };
 
+    loop = null;
+
+    /**
+     *
+     */
     componentDidMount = () => {
-        this.listeners();
+        window.addEventListener('keydown', this.keyDown);
+        window.addEventListener('keyup', this.keyUp);
+        this.loop = setInterval(this.checkKeys, loopInterval);
     };
 
+    /**
+     *
+     */
+    componentWillUnmount = () => {
+        window.removeEventListener('keydown', this.keyDown);
+        window.removeEventListener('keyup', this.keyUp);
+        this.loop = null;
+    };
+
+    /**
+     *
+     * @returns {XML}
+     */
     render = () => {
+        
         return (
             <div className="section">
                 <p>Throttle: {this.state.throttle}%</p>
@@ -53,6 +84,10 @@ export default class Controller extends Component
         );
     };
 
+    /**
+     *
+     * @param direction
+     */
     pitch = (direction = 0) => {
         direction = (direction >= 1) ? 1 : (direction <= -1) ? -1 : 0;
         if (this.state.pitch === direction) return;
@@ -62,6 +97,10 @@ export default class Controller extends Component
         }));
     };
 
+    /**
+     *
+     * @param direction
+     */
     yawY = (direction = 0) => {
         direction = (direction >= 1) ? 1 : (direction <= -1) ? -1 : 0;
         if (this.state.yawY === direction) return;
@@ -71,6 +110,10 @@ export default class Controller extends Component
         }));
     };
 
+    /**
+     *
+     * @param increase
+     */
     throttle = (increase = true) => {
         if ((increase && this.state.throttle >= 100) || (!increase && this.state.throttle <= 0)) return;
 
@@ -79,6 +122,24 @@ export default class Controller extends Component
         }));
     };
 
+    /**
+     * Increase decrease throttle by a margin
+     * @param direction
+     */
+    nudgeThrottle = (direction = 0) => {
+        direction = (direction >= 1) ? 1 : (direction <= -1) ? -1 : 0;
+        if (this.state.nudgeThrottle === direction) return;
+
+        this.setState((state) => ({
+            nudgeThrottle: direction,
+            throttle: state.throttle += (direction*2),
+        }));
+    };
+
+    /**
+     *
+     * @param direction
+     */
     rotateZ = (direction = 0) => {
         direction = (direction >= 1) ? 1 : (direction <= -1) ? -1 : 0;
         if (this.state.rotateZ === direction) return;
@@ -88,27 +149,54 @@ export default class Controller extends Component
         }));
     };
 
-    listeners = () => {
-        window.addEventListener('keydown', this.keyDown);
-        window.addEventListener('keyup', this.keyUp);
-    }
-
+    /**
+     *
+     * @param event
+     */
     keyDown = (event) => {
-        if (Object.keys(this.state.keyMap).includes(event.key)) {
+        if (!Object.keys(this.state.keyMap).includes(event.key)) return;
 
-            this[Object.keys(this.state.keyMap[event.key])[0]].apply(this, Object.values(this.state.keyMap[event.key])[0]);
-        }
-    }
+        this.setState((state) => ({
+            activeKeys: state.activeKeys.concat([event.key]),
+        }));
+    };
 
+    /**
+     *
+     * @param event
+     */
     keyUp = (event) => {
-        if (Object.keys(this.state.keyMap).includes(event.key)) {
+        if (!Object.keys(this.state.keyMap).includes(event.key)) return;
 
-            //Reset to 0 (no spaceships in node...)
-            if (['yawY', 'pitch', 'rotateZ'].includes(Object.keys(this.state.keyMap[event.key])[0])) {
+        this.setState((state) => ({
+            activeKeys: state.activeKeys.filter((i) => {return i !== event.key}),
+            deactivatingKeys: state.deactivatingKeys.concat([event.key]),
+        }));
+    };
 
-                this[Object.keys(this.state.keyMap[event.key])[0]].apply(this, [0]);
+    /**
+     * Iterator to check which keys are currently pressed
+     */
+    checkKeys = () => {
+        this.state.activeKeys.forEach((keycode) => {
+            if (Object.keys(this.state.keyMap).includes(keycode)) {
+                this[Object.keys(this.state.keyMap[keycode])[0]].apply(this, Object.values(this.state.keyMap[keycode])[0]);
             }
-        }
-    }
+        });
 
+        this.state.deactivatingKeys.forEach((keycode) => {
+            if ([
+                    'yawY',
+                    'pitch',
+                    'rotateZ',
+                    'nudgeThrottle',
+                ].includes(Object.keys(this.state.keyMap[keycode])[0])) {
+                this[Object.keys(this.state.keyMap[keycode])[0]].apply(this, [0]);
+            }
+
+            this.setState((state) => ({
+                deactivatingKeys: state.deactivatingKeys.filter((i) => {return i !== keycode}),
+            }));
+        });
+    };
 }
