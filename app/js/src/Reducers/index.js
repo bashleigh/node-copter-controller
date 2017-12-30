@@ -4,4 +4,5 @@ import menu from './Menu';
 
 export default combineReducers({
     routing: routerReducer,
+    menu,
 });

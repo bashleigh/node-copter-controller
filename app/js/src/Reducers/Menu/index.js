@@ -1,4 +1,4 @@
-import * as config from './config';
+import config from './config';
 
 export default (state = config.initialState, action = {}) => {
     switch (action.type) {

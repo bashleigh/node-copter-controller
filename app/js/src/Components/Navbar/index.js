@@ -1,20 +1,23 @@
 import React, {Component} from 'react';
 import Menu from '../Menu/index';
+import {connect} from 'react-redux';
 
+@connect(
+    state => (state),
+    dispatch => ({
+        toggleMenu: () => dispatch({
+            type: 'menu/TOGGLE',
+        }),
+    }),
+)
 export default class Navbar extends Component
 {
-    state = {
-        menu: {
-            open: false,
-        },
-    };
-
     render = () => {
         return (
             <header>
                 <nav className="navbar is-primary level">
                     <div className="navbar-left">
-                        <div className="navbar-burger" onClick={(event) => {this.toggleMenu()}}>
+                        <div className="navbar-burger" onClick={(event) => {this.props.toggleMenu()}}>
                             <span></span>
                             <span></span>
                             <span></span>
@@ -26,16 +29,8 @@ export default class Navbar extends Component
                         </div>
                     </div>
                 </nav>
-                <Menu active={this.state.menu.open}/>
+                <Menu/>
             </header>
         );
-    }
-
-    toggleMenu = () => {
-        this.setState((state) => ({
-            menu: {
-                open: !state.menu.open,
-            },
-        }));
-    }
+    };
 }
