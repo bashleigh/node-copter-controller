@@ -1,7 +1,9 @@
 Copter Controller 
 ===
 
-A reusable 'controller' for controlling copter applications via socket.
+A reusable 'controller' for controlling copter applications via socket. Enabling you to control your socket based copters using your computer.
+
+Saves buying an expensive controller.
 
 ## Key mapping
 
