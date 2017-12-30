@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Menu from './../menu';
+import Menu from '../Menu/index';
 
 export default class Navbar extends Component
 {

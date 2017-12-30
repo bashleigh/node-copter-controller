@@ -73,7 +73,7 @@ export default class Controller extends Component
      * @returns {XML}
      */
     render = () => {
-        
+
         return (
             <div className="section">
                 <p>Throttle: {this.state.throttle}%</p>

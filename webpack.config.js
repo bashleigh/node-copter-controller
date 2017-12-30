@@ -12,11 +12,13 @@ const ENTRY_POINTS = {
     'index.js': ['babel-polyfill', './app/js/index.js'],
     'index.css': ['./app/scss/index.scss'],
 };
-const EXTERNALS = {
-};
+const EXTERNALS = [
+
+];
 
 module.exports = function (env) {
     return {
+        target: 'node',
         entry: ENTRY_POINTS,
         output: {
             path: BUILD_DIRECTORY,
