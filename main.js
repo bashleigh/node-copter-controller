@@ -5,6 +5,7 @@ const {
 const electronLocalshortcut = require('electron-localshortcut');
 const path = require('path');
 const url = require('url');
+require('dotenv').config();
 
 let win;
 
@@ -20,11 +21,13 @@ function createWindow () {
         slashes: true,
     }));
 
-    electronLocalshortcut.register(win, 'F12', () => {
-        win.webContents.openDevTools();
-    });
+    if (process.env.ENV === 'development') {
+        electronLocalshortcut.register(win, 'F12', () => {
+            win.webContents.openDevTools();
+        });
 
-    win.webContents.openDevTools();
+        win.webContents.openDevTools();
+    }
 
     win.on('closed', () => {
         win = null;
