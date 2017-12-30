@@ -64,3 +64,4 @@ LOOP_INTERVAL=100
 - [ ] Binding custom functions, for example: turning off LEDs 
 - [ ] Separate ESC monitoring from returned data
 - [ ] Emergency stop button/key map function 
+- [ ] Add alternative means of communication instead of socket.io
