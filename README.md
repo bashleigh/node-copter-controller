@@ -1,12 +1,21 @@
 Copter Controller 
 ===
 
-## Install
+## Key mapping
 
-## Developing
+key mappings are currently hardcoded. I'd like to make them setting based but for now they're defined within the state of the Controller Component.
 
-Basic idea is to change {pitch, yawY, rotateZ} 1, -1 or 0. Would be nice if node had a spaceship operator.
+Mappings are as follows:
 
-and to increase or decrease throttle.
-
-Only issue I see currently is multiple keys cannot be pressed simultaneously.  
+Key | function
+--- | ---
+a | Yaw left
+d | Yaw right
+w | pitch forward
+s | pitch backwards
+e | nudge throttle up
+f | nudge throttle down
+ArrowUp | increase throttle
+ArrowDown | decrease throttle
+ArrowLeft | rotate clockwise
+ArrowRight | rotate anti-clockwise

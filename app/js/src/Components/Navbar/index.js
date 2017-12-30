@@ -25,7 +25,7 @@ export default class Navbar extends Component
                     </div>
                     <div className="level-item">
                         <div className="">
-                            <h2>Copter Controller</h2>
+                            <h2><span className="fa fa-gamepad"></span> Copter Controller</h2>
                         </div>
                     </div>
                 </nav>

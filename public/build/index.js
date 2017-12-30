@@ -27009,7 +27009,8 @@ var Navbar = (_dec = (0, _reactRedux.connect)(function (state) {
                             _react2.default.createElement(
                                 'h2',
                                 null,
-                                'Copter Controller'
+                                _react2.default.createElement('span', { className: 'fa fa-gamepad' }),
+                                ' Copter Controller'
                             )
                         )
                     )
