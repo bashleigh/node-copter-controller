@@ -1,17 +1,59 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import config from './../../Reducers/Controller/config';
+import socketConfig from './../../Reducers/Socket/config';
 
-const speed = 2;
-const loopInterval = 100;
-
+@connect(
+    state => (state),
+    dispatch => ({
+        pitch: (direction) => dispatch({
+            type: config.actions.pitch,
+            direction: direction,
+        }),
+        yawY: (direction) => dispatch({
+            type: config.actions.yawY,
+            direction: direction,
+        }),
+        rotateZ: (direction) => dispatch({
+            type: config.actions.rotateZ,
+            direction: direction,
+        }),
+        nudgeThrottle: (direction) => dispatch({
+            type: config.actions.nudgeThrottle,
+            direction: direction,
+        }),
+        activeKeys: (key) => dispatch({
+            type: config.actions.activateKey,
+            key: key,
+        }),
+        deactivateKeys: (key) => dispatch({
+            type: config.actions.deactivateKey,
+            key: key,
+        }),
+        removeDeactivateKey: (key) => dispatch({
+            type: config.actions.removeDeactivateKey,
+            key: key,
+        }),
+        throttle: (direction) => dispatch({
+            type: config.actions.throttle,
+            direction: direction,
+        }),
+        getSocketStatus: () => dispatch({
+            type: socketConfig.actions.statusAsync,
+        }),
+        connectSocket: () => dispatch({
+            type: socketConfig.actions.connect,
+        }),
+        emit: (name, payload) => dispatch({
+            type: socketConfig.actions.emit,
+            payload: payload,
+            name: name,
+        }),
+    }),
+)
 export default class Controller extends Component
 {
-
     state = {
-        pitch: 0,
-        throttle: 0,
-        rotateZ: 0,
-        yawY: 0,
-        nudgeThrottle: 0,
         keyMap: {
             w: {
                 pitch: [1],
@@ -44,8 +86,6 @@ export default class Controller extends Component
                 rotateZ: [1],
             },
         },
-        activeKeys: [],
-        deactivatingKeys: [],
     };
 
     loop = null;
@@ -54,9 +94,10 @@ export default class Controller extends Component
      *
      */
     componentDidMount = () => {
+        this.props.connectSocket();
         window.addEventListener('keydown', this.keyDown);
         window.addEventListener('keyup', this.keyUp);
-        this.loop = setInterval(this.checkKeys, loopInterval);
+        this.loop = setInterval(this.checkKeys, process.env.LOOP_INTERVAL);
     };
 
     /**
@@ -66,6 +107,7 @@ export default class Controller extends Component
         window.removeEventListener('keydown', this.keyDown);
         window.removeEventListener('keyup', this.keyUp);
         this.loop = null;
+        this.props.emit('end', null);
     };
 
     /**
@@ -76,77 +118,12 @@ export default class Controller extends Component
 
         return (
             <div className="section">
-                <p>Throttle: {this.state.throttle}%</p>
-                <p>Pitch: {(this.state.pitch === 1) ? 'forward' : (this.state.pitch === -1) ? 'backwards' : 'stationary'}</p>
-                <p>Yaw: {(this.state.yawY === 1) ? 'left' : (this.state.yawY === -1) ? 'right' : 'stationary'}</p>
-                <p>Rotate: {(this.state.rotateZ === 1) ? 'rotate left' : (this.state.rotateZ === -1) ? 'rotate right' : 'stationary'}</p>
+                <p>Throttle: {this.props.controller.throttle}%</p>
+                <p>Pitch: {(this.props.controller.pitch === 1) ? 'forward' : (this.props.controller.pitch === -1) ? 'backwards' : 'stationary'}</p>
+                <p>Yaw: {(this.props.controller.yawY === 1) ? 'left' : (this.props.controller.yawY === -1) ? 'right' : 'stationary'}</p>
+                <p>Rotate: {(this.props.controller.rotateZ === 1) ? 'rotate left' : (this.props.controller.rotateZ === -1) ? 'rotate right' : 'stationary'}</p>
             </div>
         );
-    };
-
-    /**
-     *
-     * @param direction
-     */
-    pitch = (direction = 0) => {
-        direction = (direction >= 1) ? 1 : (direction <= -1) ? -1 : 0;
-        if (this.state.pitch === direction) return;
-
-        this.setState((state) => ({
-            pitch: direction,
-        }));
-    };
-
-    /**
-     *
-     * @param direction
-     */
-    yawY = (direction = 0) => {
-        direction = (direction >= 1) ? 1 : (direction <= -1) ? -1 : 0;
-        if (this.state.yawY === direction) return;
-
-        this.setState((state) => ({
-            yawY: direction,
-        }));
-    };
-
-    /**
-     *
-     * @param increase
-     */
-    throttle = (increase = true) => {
-        if ((increase && this.state.throttle >= 100) || (!increase && this.state.throttle <= 0)) return;
-
-        this.setState((state) => ({
-            throttle: (increase === true) ? state.throttle += speed : state.throttle -= speed,
-        }));
-    };
-
-    /**
-     * Increase decrease throttle by a margin
-     * @param direction
-     */
-    nudgeThrottle = (direction = 0) => {
-        direction = (direction >= 1) ? 1 : (direction <= -1) ? -1 : 0;
-        if (this.state.nudgeThrottle === direction) return;
-
-        this.setState((state) => ({
-            nudgeThrottle: direction,
-            throttle: state.throttle += (direction*2),
-        }));
-    };
-
-    /**
-     *
-     * @param direction
-     */
-    rotateZ = (direction = 0) => {
-        direction = (direction >= 1) ? 1 : (direction <= -1) ? -1 : 0;
-        if (this.state.rotateZ === direction) return;
-
-        this.setState((state) => ({
-            rotateZ: direction,
-        }));
     };
 
     /**
@@ -156,9 +133,7 @@ export default class Controller extends Component
     keyDown = (event) => {
         if (!Object.keys(this.state.keyMap).includes(event.key)) return;
 
-        this.setState((state) => ({
-            activeKeys: state.activeKeys.concat([event.key]),
-        }));
+        this.props.activeKeys(event.key);
     };
 
     /**
@@ -168,35 +143,33 @@ export default class Controller extends Component
     keyUp = (event) => {
         if (!Object.keys(this.state.keyMap).includes(event.key)) return;
 
-        this.setState((state) => ({
-            activeKeys: state.activeKeys.filter((i) => {return i !== event.key}),
-            deactivatingKeys: state.deactivatingKeys.concat([event.key]),
-        }));
+        this.props.deactivateKeys(event.key);
     };
 
     /**
      * Iterator to check which keys are currently pressed
      */
     checkKeys = () => {
-        this.state.activeKeys.forEach((keycode) => {
+
+        this.props.controller.activeKeys.forEach((keycode) => {
             if (Object.keys(this.state.keyMap).includes(keycode)) {
-                this[Object.keys(this.state.keyMap[keycode])[0]].apply(this, Object.values(this.state.keyMap[keycode])[0]);
+                this.props[Object.keys(this.state.keyMap[keycode])[0]].apply(this, Object.values(this.state.keyMap[keycode])[0]);
+                this.props.emit(Object.keys(this.state.keyMap[keycode])[0], this.props.controller[Object.keys(this.state.keyMap[keycode])[0]]);
             }
         });
 
-        this.state.deactivatingKeys.forEach((keycode) => {
+        this.props.controller.deactivatingKeys.forEach((keycode) => {
             if ([
                     'yawY',
                     'pitch',
                     'rotateZ',
                     'nudgeThrottle',
                 ].includes(Object.keys(this.state.keyMap[keycode])[0])) {
-                this[Object.keys(this.state.keyMap[keycode])[0]].apply(this, [0]);
+                this.props[Object.keys(this.state.keyMap[keycode])[0]].apply(this, [0]);
+                this.props.emit(Object.keys(this.state.keyMap[keycode])[0], 0);
             }
 
-            this.setState((state) => ({
-                deactivatingKeys: state.deactivatingKeys.filter((i) => {return i !== keycode}),
-            }));
+            this.props.removeDeactivateKey(keycode);
         });
     };
 }

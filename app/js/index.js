@@ -26,10 +26,11 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import reducers from './src/Reducers';
+import sagas from './src/Sagas';
 
 
 const browserHistory = createHashHistory();
-const store = CreateStore(browserHistory, reducers);
+const store = CreateStore(browserHistory, reducers, sagas);
 const history = syncHistoryWithStore(browserHistory, store);
 
 persistStore(store);
