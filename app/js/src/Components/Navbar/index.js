@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Menu from '../Menu/index';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 
 @connect(
     state => (state),
@@ -25,7 +26,9 @@ export default class Navbar extends Component
                     </div>
                     <div className="level-item">
                         <div className="">
-                            <h2><span className="fa fa-gamepad"></span> Copter Controller</h2>
+                            <Link to="/" className="has-text-white">
+                                <h2><span className="fa fa-gamepad"></span> Copter Controller</h2>
+                            </Link>
                         </div>
                     </div>
                 </nav>

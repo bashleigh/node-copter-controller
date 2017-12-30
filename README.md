@@ -48,3 +48,19 @@ Below is the env for changing the looper interval of `checkKeys` function within
 ```
 LOOP_INTERVAL=100
 ```
+
+### Development 
+
+- [ ] Test socket use with xBee
+- [ ] Build socket status checking and connection error messages
+- [ ] Settings to change key mapping
+- [ ] Setting to emit calibration 
+- [ ] Logging of altitude and movements returned from gyroscope, magnetometer, GPS etc
+- [ ] Options to turn off certain components like GPS tracking
+- [ ] Battery remaining socket on receive 
+- [ ] Graphs of returned logged data
+- [ ] Visual of returned data to represent Yaw, rotation, pitch, altitude, bearing etc.
+- [ ] When you get good: have a go at flips and tricks 
+- [ ] Binding custom functions, for example: turning off LEDs 
+- [ ] Separate ESC monitoring from returned data
+- [ ] Emergency stop button/key map function 

@@ -30,6 +30,7 @@
     "redux-thunk": "^2.2.0",
     "resolve-url-loader": "^2.0.2",
     "sass-loader": "^6.0.0",
+    "showdown": "^1.8.6",
     "socket.io-client": "^2.0.4"
   },
   "devDependencies": {
