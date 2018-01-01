@@ -1,34 +1,5 @@
 import config from './config';
 
-// export default (state = config.initialState, action = {}) => {
-//     switch (action.type) {
-//         case config.actions.nudgeThrottle.increase:
-//             return {
-//                 ...state,
-//                 nudgeThrottle: 1,
-//                 throttle: (state.throttle + process.env.THROTTLE_SPEED) <= 100 ? state.throttle + process.env.THROTTLE_SPEED : state.throttle,
-//             };
-//             break;
-//         case config.actions.nudgeThrottle.decrease:
-//             return {
-//                 ...state,
-//                 nudgeThrottle: -1,
-//                 throttle: (state.throttle + process.env.THROTTLE_SPEED) >= 0 ? state.throttle - process.env.THROTTLE_SPEED : state.throttle,
-//             };
-//             break;
-//         case config.actions.nudgeThrottle.reset:
-//             return {
-//                 ...state,
-//                 throttle: ((state.nudgeThrottle === -1 && state.throttle <= (state.throttle + process.env.THROTTLE_SPEED))
-//                 ? state.throttle + process.env.THROTTLE_SPEED
-//                     : ((state.nudgeThrottle === 1 && state.throttle >= (state.throttle - process.env.THROTTLE_SPEED)
-//                         ? (state.throttle - process.env.THROTTLE_SPEED)
-//                         : state.throttle))),
-//                 nudgeThrottle: 0,
-//             };
-//             break;
-
-
 export default (state = config.initialState, action = {}) => {
     switch (action.type) {
         case config.actions.pitch:

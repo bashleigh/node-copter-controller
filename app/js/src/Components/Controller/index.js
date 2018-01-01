@@ -123,7 +123,7 @@ export default class Controller extends Component
     render = () => {
 
         return (
-            <div className="section">
+            <div>
                 <p>Throttle: {this.props.controller.throttle}%</p>
                 <p>Pitch: {(this.props.controller.pitch === 1) ? 'forward' : (this.props.controller.pitch === -1) ? 'backwards' : 'stationary'}</p>
                 <p>Yaw: {(this.props.controller.yawY === 1) ? 'left' : (this.props.controller.yawY === -1) ? 'right' : 'stationary'}</p>

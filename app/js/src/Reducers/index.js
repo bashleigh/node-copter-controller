@@ -5,6 +5,7 @@ import controller from './Controller';
 import socket from './Socket';
 import settings from './Settings';
 import {reducer as form} from 'redux-form';
+import data from './Data';
 
 export default combineReducers({
     routing: routerReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
     socket,
     settings,
     form: form,
+    data,
 });
