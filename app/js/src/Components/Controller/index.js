@@ -49,6 +49,11 @@ import socketConfig from './../../Reducers/Socket/config';
             payload: payload,
             name: name,
         }),
+        on: (name, func) => dispatch({
+            type: socketConfig.actions.on,
+            name: name,
+            func: func,
+        }),
     }),
 )
 export default class Controller extends Component
@@ -95,6 +100,7 @@ export default class Controller extends Component
      */
     componentDidMount = () => {
         this.props.connectSocket();
+        this.props.on('ESCreading', this.escReading);
         window.addEventListener('keydown', this.keyDown);
         window.addEventListener('keyup', this.keyUp);
         this.loop = setInterval(this.checkKeys, process.env.LOOP_INTERVAL);
@@ -172,4 +178,8 @@ export default class Controller extends Component
             this.props.removeDeactivateKey(keycode);
         });
     };
+
+    escReading = (payload) => {
+        console.log(payload);
+    }
 }

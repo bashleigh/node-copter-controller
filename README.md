@@ -29,6 +29,10 @@ Currently this only enables electron devtools and redux-devtools, but I've found
 ```
 ENV=development
 ```
+To turn on the devtools on load of electron, set `DEVTOOLS` to true
+```
+DEVTOOLS=true
+```
 ### Socket
 I've made a simple socket connection config for changing the port, url and whether we require http or https.
 ```
@@ -65,3 +69,4 @@ LOOP_INTERVAL=100
 - [ ] Separate ESC monitoring from returned data
 - [ ] Emergency stop button/key map function 
 - [ ] Add alternative means of communication instead of socket.io
+- [ ] Log response latency 
