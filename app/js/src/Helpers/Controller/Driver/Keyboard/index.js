@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import config from './../../Reducers/Controller/config';
-import socketConfig from './../../Reducers/Socket/config';
+import config from './../../../../Reducers/Controller/config';
+import DataConfig from './../../../../Reducers/Data/config';
 
 @connect(
     state => (state),
@@ -38,26 +38,15 @@ import socketConfig from './../../Reducers/Socket/config';
             type: config.actions.throttle,
             direction: direction,
         }),
-        getSocketStatus: () => dispatch({
-            type: socketConfig.actions.statusAsync,
-        }),
-        connectSocket: () => dispatch({
-            type: socketConfig.actions.connect,
-        }),
-        emit: (name, payload) => dispatch({
-            type: socketConfig.actions.emit,
-            payload: payload,
-            name: name,
-        }),
-        on: (name, func) => dispatch({
-            type: socketConfig.actions.on,
-            name: name,
-            func: func,
+        updateData: (data) => dispatch({
+            type: DataConfig.actions.update,
+            data: data,
         }),
     }),
 )
-export default class Controller extends Component
+export default class Keyboard extends Component
 {
+
     state = {
         keyMap: {
             w: {
@@ -95,41 +84,53 @@ export default class Controller extends Component
 
     loop = null;
 
-    /**
-     *
-     */
     componentDidMount = () => {
-        this.props.connectSocket();
-        this.props.on('ESCreading', this.escReading);
         window.addEventListener('keydown', this.keyDown);
         window.addEventListener('keyup', this.keyUp);
         this.loop = setInterval(this.checkKeys, process.env.LOOP_INTERVAL);
+        this.props.socket.on('data', (data) => {
+            //TODO delay the call as it seems to slow down react
+            this.props.updateData(data);
+        });
     };
 
-    /**
-     *
-     */
     componentWillUnmount = () => {
         window.removeEventListener('keydown', this.keyDown);
         window.removeEventListener('keyup', this.keyUp);
         this.loop = null;
-        this.props.emit('end', null);
+        this.props.socket.emit('end', null);
     };
 
-    /**
-     *
-     * @returns {XML}
-     */
     render = () => {
-
         return (
-            <div>
-                <p>Throttle: {this.props.controller.throttle}%</p>
-                <p>Pitch: {(this.props.controller.pitch === 1) ? 'forward' : (this.props.controller.pitch === -1) ? 'backwards' : 'stationary'}</p>
-                <p>Yaw: {(this.props.controller.yawY === 1) ? 'left' : (this.props.controller.yawY === -1) ? 'right' : 'stationary'}</p>
-                <p>Rotate: {(this.props.controller.rotateZ === 1) ? 'rotate left' : (this.props.controller.rotateZ === -1) ? 'rotate right' : 'stationary'}</p>
+            <div className="tile is-child">
+                <p>Keyboard driver</p>
             </div>
         );
+    };
+
+    checkKeys = () => {
+
+        this.props.controller.activeKeys.forEach((keycode) => {
+            if (Object.keys(this.state.keyMap).includes(keycode)) {
+                this.props[Object.keys(this.state.keyMap[keycode])[0]].apply(this, Object.values(this.state.keyMap[keycode])[0]);
+                this.props.socket.emit(Object.keys(this.state.keyMap[keycode])[0], this.props.controller[Object.keys(this.state.keyMap[keycode])[0]]);
+            }
+        });
+
+        this.props.controller.deactivatingKeys.forEach((keycode) => {
+            if ([
+                    'yawY',
+                    'pitch',
+                    'rotateZ',
+                    'nudgeThrottle',
+                ].includes(Object.keys(this.state.keyMap[keycode])[0])) {
+                this.props[Object.keys(this.state.keyMap[keycode])[0]].apply(this, [0]);
+                this.props.socket.emit(Object.keys(this.state.keyMap[keycode])[0], 0);
+            }
+
+            this.props.removeDeactivateKey(keycode);
+        });
     };
 
     /**
@@ -151,35 +152,4 @@ export default class Controller extends Component
 
         this.props.deactivateKeys(event.key);
     };
-
-    /**
-     * Iterator to check which keys are currently pressed
-     */
-    checkKeys = () => {
-
-        this.props.controller.activeKeys.forEach((keycode) => {
-            if (Object.keys(this.state.keyMap).includes(keycode)) {
-                this.props[Object.keys(this.state.keyMap[keycode])[0]].apply(this, Object.values(this.state.keyMap[keycode])[0]);
-                this.props.emit(Object.keys(this.state.keyMap[keycode])[0], this.props.controller[Object.keys(this.state.keyMap[keycode])[0]]);
-            }
-        });
-
-        this.props.controller.deactivatingKeys.forEach((keycode) => {
-            if ([
-                    'yawY',
-                    'pitch',
-                    'rotateZ',
-                    'nudgeThrottle',
-                ].includes(Object.keys(this.state.keyMap[keycode])[0])) {
-                this.props[Object.keys(this.state.keyMap[keycode])[0]].apply(this, [0]);
-                this.props.emit(Object.keys(this.state.keyMap[keycode])[0], 0);
-            }
-
-            this.props.removeDeactivateKey(keycode);
-        });
-    };
-
-    escReading = (payload) => {
-        console.log(payload);
-    }
 }

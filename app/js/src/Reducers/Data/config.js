@@ -1,6 +1,7 @@
 export default {
     initialState: {
-        data: {},
+        ESCs: [
+        ],
     },
     actions: {
         update: 'data/UPDATE',
