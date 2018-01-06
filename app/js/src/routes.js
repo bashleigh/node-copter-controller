@@ -13,8 +13,8 @@ export default [
         exact: true,
     },
     {
-        path: '/controller',
-        component: () => <pages.Controller/>,
+        path: '/pilot',
+        component: () => <pages.Pilot/>,
         exact: true,
     },
 ];

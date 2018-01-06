@@ -1,3 +1,3 @@
 export Settings from './Settings';
-export Controller from './Controller';
+export Pilot from './Pilot';
 export Welcome from './Welcome';

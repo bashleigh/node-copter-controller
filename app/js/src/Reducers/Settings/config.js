@@ -5,6 +5,9 @@ export default {
             ESCs: 4,
         },
         keyMaps: [],
+        driver: {
+            input: 'keyboard',
+        },
     },
     actions: {
         copter: 'settings/SET_COPTER',
