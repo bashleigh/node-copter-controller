@@ -1,0 +1,141 @@
+.horizon-gyro {
+  position: relative;
+  width: $horizinGyroSize;
+  height: $horizinGyroSize;
+  border: .75em solid #757a92;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  margin: .5em;
+
+  .surround {
+    background: #2a2a2a;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+
+    .inner {
+      height: 200%;
+      width: 200%;
+      display: flex;
+      flex-direction: column;
+      margin-top: -50%;
+      margin-left: -50%;
+
+      transform: rotateZ(0deg);
+
+      -webkit-transition: all .2s ease;
+      -moz-transition: all .2s ease;
+      transition: all .2s ease;
+
+      ul {
+        list-style-type: none;
+        margin: auto;
+        counter-reset: item;
+
+        li {
+          background: $white;
+          height: .2em;
+          margin-bottom: .4em;
+          display: block;
+
+          &:nth-child(odd) {
+            width: 50%;
+            margin-left: 25%;
+          }
+
+          &:nth-child(even) {
+            &:before {
+              display: block;
+              content: counters(item);
+              counter-increment: item;
+            }
+          }
+        }
+      }
+
+      .brown,
+      .blue {
+        height: 50%;
+        display: flex;
+        flex-direction: column;
+        .dial {
+          position: relative;
+        }
+      }
+
+      .blue {
+        background: #758aff;
+        justify-content: flex-end;
+        border-bottom: .1em solid $white;
+
+        ul {
+          width: 12.5%;
+
+        }
+      }
+
+      .brown {
+        background: #a25736;
+
+        ul {
+          margin-top: .5em;
+          width: 25%;
+        }
+      }
+    }
+  }
+  .pointer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+
+    .inner {
+      margin-top: calc(50% - .475em);
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      .left,
+      .middle,
+      .right {
+        background: #fcff24;
+        width: .75em;
+        height: .75em;
+        margin: 0 .5em;
+      }
+
+      .left,
+      .right {
+        width: 1.5em;
+        -webkit-border-radius: 25%;
+        -moz-border-radius: 25%;
+        border-radius: 25%;
+      }
+
+      .left {
+        justify-self: flex-start;
+      }
+
+      .middle {
+        justify-self: center;
+        -webkit-border-radius: 100%;
+        -moz-border-radius: 100%;
+        border-radius: 100%;
+      }
+
+      .right {
+        justify-self: flex-end;
+      }
+    }
+  }
+}

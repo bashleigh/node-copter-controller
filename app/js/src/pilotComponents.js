@@ -5,6 +5,7 @@ import {
     Throttle,
     Battery,
     MagneticCompass,
+    HorizonGyro,
 } from './Components/Pilot';
 
 
@@ -13,5 +14,6 @@ export default [
     <Throttle/>,
     <ESCReading/>,
     <Battery/>,
-    <MagneticCompass/>
+    <MagneticCompass/>,
+    <HorizonGyro/>,
 ];

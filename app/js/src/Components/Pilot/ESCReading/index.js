@@ -10,6 +10,7 @@ export default class ESCReading extends Component
     render = () => {
         return (
             <div className="tile is-child">
+                ESC readings
                 {this.props.data.ESCs.map((value, key) => (
                     <ProgressBar value={value} key={key}>{value}%</ProgressBar>
                 ))}
