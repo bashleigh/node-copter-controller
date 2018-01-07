@@ -15706,7 +15706,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     initialState: {
-        ESCs: [],
+        ESCs: [23, 45, 46, 82],
         battery: 0,
         GPS: {
             long: null,
@@ -34457,6 +34457,8 @@ var Battery = (_dec = (0, _reactRedux.connect)(function (state) {
             return _react2.default.createElement(
                 'div',
                 { className: 'tile is-child' },
+                'Battery life remaining',
+                _react2.default.createElement('br', null),
                 _this.renderBattery(),
                 ' ',
                 _this.props.data.battery,
@@ -34791,6 +34793,7 @@ var Throttle = (_dec = (0, _reactRedux.connect)(function (state) {
             return _react2.default.createElement(
                 'div',
                 { className: 'tile is-child' },
+                'Throttle',
                 _react2.default.createElement(_ProgressBar2.default, { value: _this.props.controller.throttle })
             );
         }, _temp), _possibleConstructorReturn(_this, _ret);

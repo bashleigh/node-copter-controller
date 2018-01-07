@@ -1,6 +1,10 @@
 export default {
     initialState: {
         ESCs: [
+            23,
+            45,
+            46,
+            82,
         ],
         battery: 0,
         GPS: {

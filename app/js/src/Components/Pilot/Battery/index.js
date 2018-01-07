@@ -9,6 +9,8 @@ export default class Battery extends Component
     render = () => {
         return (
             <div className="tile is-child">
+                Battery life remaining
+                <br/>
                 {this.renderBattery()} {this.props.data.battery}%
             </div>
         );
