@@ -17,4 +17,14 @@ export default [
         component: () => <pages.Pilot/>,
         exact: true,
     },
+    {
+        path: '/changelog',
+        component: () => <pages.ChangeLog/>,
+        exact: true,
+    },
+    {
+        path: '/calibrate',
+        component: () => <pages.Calibration/>,
+        exact: true,
+    },
 ];
