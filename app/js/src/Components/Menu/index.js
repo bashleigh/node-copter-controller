@@ -22,6 +22,9 @@ export default class Menu extends Component {
                 <Link to="/settings" className="navbar-item" onClick={(event) => this.props.closeMenu()}>
                     Settings
                 </Link>
+                <Link to="/calibrate" className="navbar-item" onClick={(event) => this.props.closeMenu()}>
+                    Calibrate
+                </Link>
             </div>
         );
     }

@@ -1,0 +1,100 @@
+.compass {
+  position: relative;
+    border: .75em solid #757a92;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    width: $compassSize;
+    height: $compassSize;
+    margin: .5em;
+
+  &:before {
+    content: '';
+
+    border: 2px dashed #444;
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    top: 10px;
+
+    border-radius: 50%;
+  }
+
+  .pointer {
+    position: absolute;
+    width: .2em;
+    height: 0;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: rotateZ(0deg);
+
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    transition: all .2s ease;
+
+    .inner {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      margin: auto;
+
+      &:after,
+      &:before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        content: '';
+        width: 0;
+        height: 0;
+        border: .5em solid transparent;
+        margin-left: -.5em;
+      }
+      &:before {
+        border-bottom-width: 2em;
+        border-bottom-color: #FF0000;
+        margin-top: -2.5em;
+      }
+
+      &:after {
+        border-top-width: 2em;
+        border-top-color: #6b6eff;
+      }
+    }
+  }
+
+  span {
+    position: absolute;
+
+    &:nth-child(1) {
+      top: .5em;
+      left: 50%;
+      margin-left: -.5em;
+    }
+
+    &:nth-child(3) {
+      bottom: .5em;
+      left: 50%;
+      margin-left: -.5em;
+    }
+
+    &:nth-child(2) {
+      top: 50%;
+      right: 1em;
+      margin-top: -1em;
+    }
+
+    &:nth-child(4) {
+      top: 50%;
+      left: 1em;
+      margin-top: -1em;
+    }
+  }
+}
